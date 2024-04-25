@@ -6,6 +6,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UserRegistrationView(View):
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+
+        request.title = _("Ro'yxatdan o'tish")
+
     def get(self, request):
         return render(request, 'layouts/form.html', {
             'form': RegistrationForm()

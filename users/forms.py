@@ -7,10 +7,9 @@ from django.core.exceptions import ValidationError
 class RegistrationForm(forms.ModelForm):
     confirm = forms.CharField(max_length=100, label=_('Parol takroran'), widget=forms.PasswordInput)
 
-    def clean_confirm_password(self):
+    def clean_confirm(self):
         if self.cleaned_data['confirm'] != self.cleaned_data['password']:
             raise ValidationError(_('Parollar bir xil emas!'))
-
         return self.cleaned_data['confirm']
 
     class Meta:
@@ -21,7 +20,7 @@ class RegistrationForm(forms.ModelForm):
             'password': _('Parol')
         }
         help_texts = {
-            'username': _("Login lotin harflaridan iborat bo'lishi lozim."),
+            'username': _("Lotin harflari, sonlar va @/./+/-/_ belgilaridan iborat bo'lishi lozim."),
         }
         widgets = {
             'password': forms.PasswordInput
