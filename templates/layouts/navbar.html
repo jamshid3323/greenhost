@@ -11,10 +11,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a href="{% url 'main:home' %}" class="nav-item nav-link active">Home</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="domain.html" class="nav-item nav-link">Domain</a>
-                <a href="hosting.html" class="nav-item nav-link">Hosting</a>
+                <a href="{% url 'main:home' %}" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+                <a href="{% url 'main:about' %}" class="nav-item nav-link {% if request.path == '/about/' %}active{% endif %}">About</a>
+                <a href="{% url 'main:domain' %}" class="nav-item nav-link {% if request.path == '/domain/' %}active{% endif %}">Domain</a>
+                <a href="{% url 'main:hosting' %}" class="nav-item nav-link {% if request.path == '/hosting/' %}active{% endif %}">Hosting</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu m-0">
@@ -23,16 +23,16 @@
                         <a href="comparison.html" class="dropdown-item">Comparison</a>
                     </div>
                 </div>
-                <a href="{% url 'main:contact' %}" class="nav-item nav-link">Contact</a>
+                <a href="{% url 'main:contact' %}" class="nav-item nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact</a>
             </div>
             {% if user.is_authenticated %}
-                <li class="nav-item dropdown">
+                <div class="dropdown ms-4 me-5">
                     <a class="nav-link user-avatar cover rounded-circle" style="background-image: url('{{ request.user.avatar }}')" href="#"></a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'users:profile' %}">{% translate "Profil" %}</a>
                         <a class="dropdown-item" href="{% url 'users:logout' %}">{% translate "Chiqish" %}</a>
                     </div>
-                </li>
+                </div>
 {#                <butaton type="button" class="btn text-secondary ms-3" data-bs-toggle="modal"#}
 {#                         data-bs-target="#searchModal">#}
 {#                    <i class="fa fa-search"></i></butaton>#}

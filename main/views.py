@@ -8,3 +8,15 @@ class HomeView(TemplateView):
 
 class ContactView(TemplateView):
     template_name = 'contact.html'
+
+
+class AboutView(TemplateView):
+    template_name = 'about.html'
+
+
+class DomainView(TemplateView):
+    template_name = 'domain.html'
+
+
+class HostingView(TemplateView):
+    template_name = 'hosting.html'
