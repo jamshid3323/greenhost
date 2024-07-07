@@ -45,6 +45,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -113,6 +114,11 @@ USE_I18N = True
 
 USE_TZ = False
 
+LANGUAGES = (
+    ("uz", "🇺🇿 O'zbek"),
+    ('ru', "🇷🇺 Русский"),
+    ('en', "🇬🇧 English"),
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -130,10 +136,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -143,3 +145,25 @@ MESSAGE_TAGS = {
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locales',
+]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_USE_SSL = config('EMAIL_USE_SSL')
+
+BOT_TOKEN = config('BOT_TOKEN')
+BOT_ADMIN_ID = config('BOT_ADMIN_ID')
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

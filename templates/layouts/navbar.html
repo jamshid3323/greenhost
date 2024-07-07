@@ -1,4 +1,6 @@
 {% load static i18n %}
+{% get_available_languages as LANGUAGES %}
+{% get_current_language as LANGUAGE_CODE %}
 <!-- Navbar & Hero Start -->
 <div class="container-xxl position-relative p-0">
     <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0 sticky-top shadow-sm">
@@ -11,31 +13,40 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a href="{% url 'main:home' %}" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
-                <a href="{% url 'main:about' %}" class="nav-item nav-link {% if request.path == '/about/' %}active{% endif %}">About</a>
-                <a href="{% url 'main:domain' %}" class="nav-item nav-link {% if request.path == '/domain/' %}active{% endif %}">Domain</a>
-                <a href="{% url 'main:hosting' %}" class="nav-item nav-link {% if request.path == '/hosting/' %}active{% endif %}">Hosting</a>
+                <a href="{% url 'main:home' %}" class="nav-item nav-link {% if request.path|slice:"3:" == '/' %}active{% endif %}">Home</a>
+                <a href="{% url 'main:about' %}"
+                   class="nav-item nav-link {% if request.path|slice:"3:" == '/about/' %}active{% endif %}">About</a>
+                <a href="{% url 'main:domain' %}"
+                   class="nav-item nav-link {% if request.path|slice:"3:" == '/domain/' %}active{% endif %}">Domain</a>
+                <a href="{% url 'hosting:hosting' %}"
+                   class="nav-item nav-link {% if request.path|slice:"3:" == '/hosting/' %}active{% endif %}">Hosting</a>
+                <a href="{% url 'main:contact' %}"
+                   class="nav-item nav-link {% if request.path|slice:"3:" == '/contact/' %}active{% endif %}">Contact</a>
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                    <a href="#" class="nav-link dropdown" data-bs-toggle="dropdown">
+                        {% for l in LANGUAGES %}
+                            {% if l.0 == LANGUAGE_CODE %}
+                                {{ l.1|slice:":2" }}
+                            {% endif %}
+                        {% endfor %}
+                    </a>
                     <div class="dropdown-menu m-0">
-                        <a href="team.html" class="dropdown-item">Our Team</a>
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="comparison.html" class="dropdown-item">Comparison</a>
+                        {% for l in LANGUAGES %}
+                            <a href="/{{ l.0 }}{{ request.get_full_path|slice:"3:" }}" class="dropdown-item">{{ l.1 }}</a>
+                        {% endfor %}
                     </div>
                 </div>
-                <a href="{% url 'main:contact' %}" class="nav-item nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact</a>
+                
             </div>
             {% if user.is_authenticated %}
                 <div class="dropdown ms-4 me-5">
-                    <a class="nav-link user-avatar cover rounded-circle" style="background-image: url('{{ request.user.avatar }}')" href="#"></a>
+                    <a class="nav-link user-avatar cover rounded-circle"
+                       style="background-image: url('{{ request.user.avatar }}')" href="#"></a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'users:profile' %}">{% translate "Profil" %}</a>
                         <a class="dropdown-item" href="{% url 'users:logout' %}">{% translate "Chiqish" %}</a>
                     </div>
                 </div>
-{#                <butaton type="button" class="btn text-secondary ms-3" data-bs-toggle="modal"#}
-{#                         data-bs-target="#searchModal">#}
-{#                    <i class="fa fa-search"></i></butaton>#}
             {% else %}
                 <a href="{% url 'users:login' %}"
                    class="btn btn-secondary py-2 px-4 ms-3">{% translate "Tizimga kirish" %}</a>
